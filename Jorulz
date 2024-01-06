@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Game</title>
+  <style>
+    /* Styles remain unchanged for brevity */
+  </style>
+</head>
+<body>
+
+  <h1>Memory Game</h1>
+  <div id="game-board"></div>
+  <h2>Leaderboard</h2>
+  <ol id="leaderboard"></ol>
+
+  <script>
+    // Previous code remains unchanged
+
+    function endGame() {
+      alert('Congratulations! You matched all pairs.');
+      saveScore();
+      displayLeaderboard();
+      resetGame();
+    }
+
+    function saveScore() {
+      const playerName = prompt('Enter your name for the leaderboard:');
+      const score = flippedCards.length / 2;
+
+      // Retrieve existing scores from local storage
+      const existingScores = JSON.parse(localStorage.getItem('memoryGameScores')) || [];
+
+      // Add the new score to the list
+      existingScores.push({ name: playerName, score: score });
+
+      // Sort scores in descending order
+      existingScores.sort((a, b) => b.score - a.score);
+
+      // Save the updated scores back to local storage
+      localStorage.setItem('memoryGameScores', JSON.stringify(existingScores));
+    }
+
+    function displayLeaderboard() {
+      const leaderboardElement = document.getElementById('leaderboard');
+      leaderboardElement.innerHTML = '';
+
+      // Retrieve scores from local storage
+      const scores = JSON.parse(localStorage.getItem('memoryGameScores')) || [];
+
+      // Display scores in the leaderboard
+      scores.forEach((score, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${index + 1}. ${score.name}: ${score.score} pairs`;
+        leaderboardElement.appendChild(listItem);
+      });
+    }
+
+    function resetGame() {
+      const gameBoard = document.getElementById('game-board');
+      gameBoard.innerHTML = '';
+      flippedCards = [];
+      matchedPairs = 0;
+      createGameBoard();
+    }
+
+    createGameBoard();
+    displayLeaderboard(); // Display leaderboard on page load
+  </script>
+
+</body>
+</html>
